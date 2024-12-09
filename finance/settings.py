@@ -89,6 +89,11 @@ WSGI_APPLICATION = 'finance.wsgi.application'
 DATABASES = {
     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-rosencrantza-stocksblog-9xx6o4wwtmj.ws-eu117.gitpod.io',
+    'https://din-andra-ursprung-url.com',
+]
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
