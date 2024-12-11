@@ -1,4 +1,3 @@
-/* Updated CSS for StocksBlog */
 
 body {
     background-color: #B4C3CF;
@@ -138,4 +137,38 @@ body {
 
 .approval {
     color: #8D8C3E;
+}
+
+/* New CSS for the Introductory Section */
+.intro-section {
+    background-color: #F9FAFC;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.intro-section h1 {
+    color: #13252F;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.intro-section p {
+    color: #6C6F5C;
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+/* Footer styling to match the navbar */
+.footer {
+    background-color: #13252F;
+    color: #F9FAFC;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 1rem;
 }
