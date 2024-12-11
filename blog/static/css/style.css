@@ -1,0 +1,141 @@
+/* Updated CSS for StocksBlog */
+
+body {
+    background-color: #B4C3CF;
+}
+
+.brand {
+    font-family: Lato, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #13252F;
+}
+
+.red-o {
+    color: #8D8C3E;
+}
+
+.thin {
+    font-weight: 300;
+}
+
+.light-bg {
+    background-color: #F9FAFC;
+}
+
+.dark-bg {
+    background-color: #6C6F5C;
+}
+
+.main-bg {
+    background-color: #B4C3CF;
+}
+
+.card {
+    border: none;
+    background-color: transparent;
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-flash {
+    position: absolute;
+    bottom: 5%;
+    min-width: 30%;
+    left: -2px;
+    background-color: #6C6F5C;
+}
+
+.author {
+    color: white;
+    margin: 4px;
+    text-transform: uppercase;
+}
+
+.masthead {
+    margin-top: 10px;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    height: 33vh;
+    width: 100%;
+}
+
+.masthead-text {
+    background-color: #6C6F5C;
+    color: white;
+    position: relative;
+}
+
+.masthead-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.masthead-image:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 90%;
+    height: 100%;
+    width: 150%;
+    background: #6C6F5C;
+    transform: skew(15deg);
+    z-index: 100;
+}
+
+.post-link {
+    text-decoration: none;
+    color: #13252F;
+}
+
+.post-link:hover, .page-link {
+    color: #8D8C3E;
+}
+
+.btn-signup, .btn-edit {
+    background-color: #8D8C3E;
+    color: #fff;
+}
+
+.btn-signup:hover, .btn-signup:active {
+    background-color: #fff;
+    color: #6C6F5C;
+}
+
+.link {
+    color: #6C6F5C;
+    text-decoration: none;
+}
+
+.link:hover, .link:active {
+    color: #13252F;
+    text-decoration: underline;
+}
+
+.btn-like {
+    color: #8D8C3E;
+    border: none;
+    background: transparent;
+}
+
+.btn-delete {
+    color: #fff;
+    background: #8D8C3E;
+}
+
+.btn-like:hover, .btn-like:active {
+    color: #8D8C3E;
+    background: transparent;
+    border: none;
+}
+
+.faded {
+    color: #6C6F5C;
+}
+
+.approval {
+    color: #8D8C3E;
+}
