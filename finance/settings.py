@@ -93,7 +93,7 @@ DATABASES = {
 }
 CSRF_TRUSTED_ORIGINS = [
     'https://8000-rosencrantza-stocksblog-9xx6o4wwtmj.ws-eu117.gitpod.io',
-    'https://din-andra-ursprung-url.com',
+    "https://*.herokuapp.com"
 ]
 
 # Password validation
