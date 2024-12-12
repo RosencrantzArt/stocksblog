@@ -18,7 +18,7 @@
                                     <p class="author">Author: {{ post.author }}</p>
                                 </div>                        
                             </div>
-                            <a href="{% url 'post_detail' post.pk %}" class="post-link"> {# Länk till inläggsdetaljer #}
+                            <a href="{% url "{% url 'post_detail' post.slug %}"class="post-link"> {# Länk till inläggsdetaljer #}
                                 <h2 class="card-title">{{ post.title }}</h2>
                             </a>
 
