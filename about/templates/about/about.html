@@ -1,14 +1,23 @@
-<!DOCTYPE html>
+{% extends 'blog/base.html' %}
+{% block content %}
+{% load static %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ about.title }}</title>
-</head>
-<body>
-    <h1>{{ about.title }}</h1>
-    <p>{{ about.content }}</p>
-  
-</body>
-</html>
+<!-- Main container -->
+<div class="container mt-5">
+    <!-- Title and content section -->
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ about.title }}</h1>
+            <div>{{ about.content|safe }}</div>
+        </div>
+    </div>
+
+    <!-- Second row: Updated on info -->
+    <div class="row">
+        <div class="col text-right">
+            <p class="text-end"><em>Updated on: {{ about.updated_date }}</em></p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

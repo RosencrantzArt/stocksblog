@@ -1,0 +1,34 @@
+{% extends "blog/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Log In" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mt-4 offset-md-2">
+            <h2 class="text-center">{% trans "Welcome Back!" %}</h2>
+
+            <p class="text-center">
+                {% blocktrans %}Log in to access your account, leave comments, like posts, and engage with the community.
+                Don't have an account? <a class="link" href="{{ signup_url }}">Sign up</a> today!{% endblocktrans %}
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mt-4 offset-md-3">
+            <form method="POST" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <button class="btn btn-primary w-100" type="submit">{% trans "Log In" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
