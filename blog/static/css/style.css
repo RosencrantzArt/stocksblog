@@ -1,11 +1,12 @@
-
 body {
     background-color: #B4C3CF;
+    font-family: 'Lato', sans-serif;
+    color: #13252F;
 }
 
 .brand {
-    font-family: Lato, sans-serif;
-    font-size: 1.4rem;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #13252F;
 }
@@ -33,6 +34,16 @@ body {
 .card {
     border: none;
     background-color: transparent;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .image-container {
@@ -45,12 +56,16 @@ body {
     min-width: 30%;
     left: -2px;
     background-color: #6C6F5C;
+    border-radius: 8px;
+    padding: 5px;
 }
 
 .author {
     color: white;
     margin: 4px;
     text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .masthead {
@@ -58,19 +73,25 @@ body {
     overflow: hidden;
     position: relative;
     display: inline-block;
-    height: 33vh;
+    height: 35vh;
     width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .masthead-text {
     background-color: #6C6F5C;
     color: white;
     position: relative;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1.5rem;
 }
 
 .masthead-image {
     position: relative;
     overflow: hidden;
+    border-radius: 8px;
 }
 
 .masthead-image:after {
@@ -88,6 +109,7 @@ body {
 .post-link {
     text-decoration: none;
     color: #13252F;
+    font-weight: 500;
 }
 
 .post-link:hover, .page-link {
@@ -97,6 +119,11 @@ body {
 .btn-signup, .btn-edit {
     background-color: #8D8C3E;
     color: #fff;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.2s ease;
 }
 
 .btn-signup:hover, .btn-signup:active {
@@ -107,6 +134,7 @@ body {
 .link {
     color: #6C6F5C;
     text-decoration: none;
+    font-weight: 500;
 }
 
 .link:hover, .link:active {
@@ -118,17 +146,28 @@ body {
     color: #8D8C3E;
     border: none;
     background: transparent;
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-like:hover, .btn-like:active {
+    color: #fff;
+    background: #8D8C3E;
 }
 
 .btn-delete {
     color: #fff;
     background: #8D8C3E;
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
 }
 
-.btn-like:hover, .btn-like:active {
-    color: #8D8C3E;
-    background: transparent;
-    border: none;
+.btn-delete:hover, .btn-delete:active {
+    background: #6C6F5C;
 }
 
 .faded {
@@ -145,6 +184,7 @@ body {
     border-radius: 10px;
     padding: 30px;
     margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .intro-section h1 {
