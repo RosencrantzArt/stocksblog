@@ -4,8 +4,7 @@ Stockblog is a Django-based blog project that provides a platform for users to s
 
 ## Features
 
-- **User Accounts**: Users can register, log in, and manage their accounts.
-- **Posts**: Users can create, update, and delete their own posts. Posts can include stock symbols and related analysis.
+- **User Accounts**: Users can register, log in and logout. 
 - **Comments**: Users can leave comments on posts, and edit or delete their own comments.
 - **Admin Control**: Admins have the ability to delete comments.
   
@@ -67,12 +66,12 @@ To get the project running locally, follow these steps:
 
 1. Clone the repository to your local machine.
     ```bash
-    git clone https://github.com/your-username/stockblog.git
+    git clone https://github.com/RosencrantzArt/stocksblog.git
     ```
 
 2. Create a new GitHub repository to host the project and set it as the remote origin:
     ```bash
-    git remote set-url origin <YOUR_GITHUB_REPO_URL>
+    git remote set-url origin <https://stockblog-f1303a9b9ead.herokuapp.com/>
     ```
 
 3. Push the changes to your repository:
@@ -95,19 +94,19 @@ To get the project running locally, follow these steps:
 ## Functionality
 
 ### Homepage
-The homepage displays a list of the latest stock analysis posts, including a title, excerpt, and a small image. Users can click on a post to view its full content and leave comments.
+The homepage displays a list of the latest stock analysis posts, including a title and expcert. Users can click on a post to view its full content and leave comments.
 
 ### User Accounts
-Users can register, log in, and manage their accounts. They can post stock analysis and comment on posts. Users can edit and delete their own comments.
+Users can register, log in and logout. 
 
 ### Post Creation and Editing
-Users can create new posts with detailed stock analysis, including text content and stock symbols. Posts can be updated or deleted by the user who created them.
+Admin can write and update posts. 
 
 ### Commenting
-Users can leave comments on posts to interact with the author and other readers. Users can edit or delete their own comments.
+Users can leave comments on posts to interact with the author and other readers. Users can edit or delete their own comments. 
 
 ### Admin Control
-Admins have the ability to delete comments, which helps in moderating the content and maintaining a respectful environment.
+Admins have the ability to delete comments, which helps in moderating the content and maintaining a respectful environment. Admin needs to aprove new comments and comments thats been edited before it shows on the page. 
 
 ## Database Schema
 
@@ -115,43 +114,64 @@ The database schema for Stockblog consists of three main entities: Users, Posts,
 
 ### Tables:
 
-#### 1. User
-| Column      | Type         | Description                |
-|-------------|--------------|----------------------------|
-| id          | int (PK)     | Unique ID for the user.    |
-| name        | varchar      | The user's name.           |
-| email       | varchar      | The user's email address.  |
-| password    | varchar      | The user's password.       |
+### 1. **User**
+| Column      | Type         | Description                             |
+|-------------|--------------|-----------------------------------------|
+| id          | int (PK)     | Unique ID for the user.                 |
+| name        | varchar      | The user's name.                        |
+| email       | varchar      | The user's email address.               |
+| password    | varchar      | The user's password (hashed).           |
 
-#### 2. Post
-| Column      | Type         | Description                     |
-|-------------|--------------|---------------------------------|
-| id          | int (PK)     | Unique ID for the post.         |
-| title       | varchar      | Title of the post.              |
-| content     | text         | Content of the post.            |
-| stock_symbols | varchar    | Stock symbols referenced in the post. |
-| created_at  | datetime     | Timestamp when the post was created. |
-| user_id     | int (FK)     | Foreign key linking to the user's ID. |
+- **Relationships**:
+  - A **User** can create many **Posts** and **Comments**.
 
-#### 3. Comment
-| Column      | Type         | Description                     |
-|-------------|--------------|---------------------------------|
-| id          | int (PK)     | Unique ID for the comment.      |
-| content     | text         | Content of the comment.         |
-| created_at  | datetime     | Timestamp when the comment was created. |
-| user_id     | int (FK)     | Foreign key linking to the user's ID. |
-| post_id     | int (FK)     | Foreign key linking to the post's ID. |
+---
 
-### Relationships:
-- **User**: A user can create many posts and comments.
-- **Post**: A post belongs to one user and can have many comments.
-- **Comment**: A comment belongs to one user and is linked to a specific post.
+### 2. **Post**
+| Column        | Type         | Description                                      |
+|---------------|--------------|--------------------------------------------------|
+| id            | int (PK)     | Unique ID for the post.                          |
+| title         | varchar      | Title of the post.                              |
+| content       | text         | Content of the post.                            |
+| stock_symbols | varchar      | Stock symbols referenced in the post (if applicable). |
+| created_at    | datetime     | Timestamp when the post was created.            |
+| user_id       | int (FK)     | Foreign key linking to the user's ID who created the post. |
+
+- **Relationships**:
+  - A **Post** belongs to one **User** and can have many **Comments**.
+
+---
+
+### 3. **Comment**
+| Column      | Type         | Description                                      |
+|-------------|--------------|--------------------------------------------------|
+| id          | int (PK)     | Unique ID for the comment.                       |
+| content     | text         | Content of the comment.                         |
+| created_at  | datetime     | Timestamp when the comment was created.         |
+| user_id     | int (FK)     | Foreign key linking to the user's ID who created the comment. |
+| post_id     | int (FK)     | Foreign key linking to the post's ID.           |
+
+- **Relationships**:
+  - A **Comment** belongs to one **User** and is linked to a specific **Post**.
+  - A **User** can edit or delete their own comments, based on matching the `user_id` in the **Comment** table with the current logged-in user.
+
+---
+
+### Key Points:
+- **User** can create an account, comment on posts, and edit or delete their own comments.
+- **Post** belongs to a **User** and can have many **Comments**.
+- **Comment** belongs to a **User** and is associated with a **Post**.
+
+### Additional Considerations:
+- **Access Control**: Ensure that users can only edit or delete their own comments by comparing the logged-in user's ID with the `user_id` in the **Comment** table.
+- **Indexes**: It is recommended to create indexes on `user_id` and `post_id` in the **Comment** table to optimize queries that filter by user or post.
+
 
 ## Improvements and Future Features
 
-- **User Portfolios**: Users will be able to create and track their stock investments within their portfolio.
-- **Interactive Charts**: Implement interactive charts for displaying stock performance and analysis.
-- **Market News Integration**: Integrate real-time stock news feeds to keep users up-to-date on market trends.
+- **User Posts**: Users will be able to create their own posts, including adding content and stock symbols.
+- **Comment Replies**: Users will be able to reply to comments made on posts, enabling threaded discussions.
+- **Comment Likes**: Users will be able to like comments made by other users, encouraging engagement and interaction.
 
 ## Design Overview
 
@@ -163,8 +183,11 @@ The color scheme of Stockblog is inspired by a professional and modern look that
 |-----------------|-------------------------------|------------------------------------------------|
 | `#8D8C3E`      | Buttons, highlights           | A goldish yellow tone for buttons and key actions. |
 | `#B4C3CF`      | Background, sections          | A soft blue-gray tone for backgrounds and main sections. |
-| `#6C6F5C`      | Footer, accents               | A muted olive-green used for footer and other secondary accents. |
-| `#FFFFFF`      | Card backgrounds, text        | Neutral white, balancing the other colors.    |
+| `#6C6F5C`      | Color for frame headline      | A dark beige used for frame headline in posts. |
+| `#13252F`      | Footer, accents, text         | A dark blue-green used for footer and text.  |
+
+
+![Alt text](staticfiles/admin/img/gis/colorscheme.png)
 
 ### Typography
 The font used throughout the project is:
@@ -177,9 +200,9 @@ The design focuses on clarity and usability, with a modern and professional layo
 ## CRUD Functionality
 
 ### 1. Create
-- **Description**: Users can create new posts and comments through an intuitive interface.
+- **Description**: Users can create account and add comments through an intuitive interface.
 - **How it works**:
-  - Posts: Users can write text content and include stock symbols.
+  - Posts: Users can click on posts and view the whole post.
   - Comments: Users can leave comments on posts.
 
 ### 2. Read
@@ -189,20 +212,26 @@ The design focuses on clarity and usability, with a modern and professional layo
   - Clicking a post shows its full content, along with comments.
 
 ### 3. Update
-- **Description**: Users can edit their own posts and comments.
+- **Description**: Users can edit their own comments.
 - **How it works**: 
-  - Users can modify the content of their posts and comments.
+  - Users can modify the content of their comments.
 
 ### 4. Delete
 - **Description**: Users can delete their own posts and comments.
 - **How it works**:
-  - Users can remove their comments and posts.
+  - Users can remove their comments. 
   - Admins can delete comments if necessary.
+
+
+## Testing 
+
 
 ## License
 
 MIT License
 
+## 
+
 ## Contact
 
-For questions or feedback, please contact me via [your email address or GitHub profile].
+For questions or feedback, please contact me via anrosencrantz79@icloud.com
