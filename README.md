@@ -110,24 +110,35 @@ Users can register, log in and logout.
 ![Alt text](staticfiles/admin/img/gis/logout.png)
 
 ### Post Creation and Editing
+
 Admin can write and update posts. 
+
+
 ![Alt text](staticfiles/admin/img/gis/admincreatepost.png)    
 
 ### Commenting
+
 Users can leave comments on posts to interact with the author and other readers. Users can edit or delete their own comments. 
+
+
 ![Alt text](staticfiles/admin/img/gis/commentEditDelete.png)   
 
 ### Admin Control
+
 Admins have the ability to delete comments, which helps in moderating the content and maintaining a respectful environment. Admin needs to aprove new comments and comments thats been edited before it shows on the page. 
+
+
 ![Alt text](staticfiles/admin/img/gis/waittoapprovecomment.png)
 
 ### Confirmation 
 A confirmation message shows after every command
+
 ![Alt text](staticfiles/admin/img/gis/comfirmcommentdelete.png)
 
 ![Alt text](staticfiles/admin/img/gis/loginconfirm.png)
 
 ### About page 
+
 ![Alt text](staticfiles/admin/img/gis/aboutpage.png)
 
 ## Database Schema
