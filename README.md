@@ -122,8 +122,9 @@ Admins have the ability to delete comments, which helps in moderating the conten
 ![Alt text](staticfiles/admin/img/gis/waittoapprovecomment.png)
 
 ### Confirmation 
-A confirmation message shows after eftery command
+A confirmation message shows after every command
 ![Alt text](staticfiles/admin/img/gis/comfirmcommentdelete.png)
+
 ![Alt text](staticfiles/admin/img/gis/loginconfirm.png)
 
 ### About page 
@@ -293,10 +294,13 @@ The design is simple and user-friendly, aiming for clarity and ease of navigatio
   ![Alt text](staticfiles/admin/img/gis/htmlvalidation.png)
 
 - Lighthouse 
+
   Mobile
+
   ![Alt text](staticfiles/admin/img/gis/mobilelighthouse.png)
 
   Desktop 
+
   ![Alt text](staticfiles/admin/img/gis/desktoplighthouse.png)
 
 ## Known Bugs
