@@ -2,17 +2,29 @@ from pathlib import Path
 import os
 import dj_database_url
 
+
+
 if os.path.isfile('env.py'):
     import env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = True
 
-ALLOWED_HOSTS = ['8000-rosencrantza-stocksblog-ij81842ssky.ws.codeinstitute-ide.net', '.herokuapp.com']
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+
+ALLOWED_HOSTS = [
+    '8000-rosencrantza-stocksblog-ij81842ssky.ws.codeinstitute-ide.net',
+    '.herokuapp.com',
+    'localhost',
+    '127.0.0.1'
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,16 +46,21 @@ INSTALLED_APPS = [
     'about',
 ]
 
+
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,7 +70,9 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
+
 ROOT_URLCONF = 'finance.urls'
+
 
 TEMPLATES = [
     {
@@ -63,7 +82,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -71,17 +90,27 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'finance.wsgi.application'
 
-# Database
-DATABASE_URL = os.environ.get("DATABASE_URL")
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if not DATABASE_URL:
-    raise ValueError("DATABASE_URL är inte definierad i miljövariablerna.")
+    raise ValueError("DATABASE_URL not defined")
 
 DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL)
 }
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'blog', 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.gitpod.io',
@@ -97,15 +126,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'blog', 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
