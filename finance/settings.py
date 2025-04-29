@@ -12,7 +12,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 
-SECRET_KEY = os.environ.get('191817161514')
+SECRET_KEY = os.environ.get('SECRET KEY')
 
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
