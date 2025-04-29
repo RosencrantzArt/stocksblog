@@ -12,7 +12,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('191817161514')
 
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
@@ -93,8 +93,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'finance.wsgi.application'
 
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL not defined")
