@@ -9,6 +9,11 @@ from django.views.generic import UpdateView, DeleteView
 from .models import Post, Comment
 from .forms import CommentForm, PostForm
 
+def some_view(request):
+    from blog.models import Post 
+    ...
+
+
 
 class PostList(generic.ListView):
     model = Post
@@ -89,7 +94,7 @@ class PostUpdateView(UpdateView):
     template_name = "blog/post_form.html"
 
     def get_queryset(self):
-        # Bara författaren får redigera sina egna inlägg
+       
         return Post.objects.filter(author=self.request.user)
 
     def form_valid(self, form):
@@ -104,12 +109,14 @@ class PostDeleteView(DeleteView):
     success_url = reverse("home")
 
     def get_queryset(self):
-        # Bara författaren får radera sina egna inlägg
+      
         return Post.objects.filter(author=self.request.user)
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Post deleted successfully!")
         return super().delete(request, *args, **kwargs)
+    
+
 
 
 @login_required
@@ -127,8 +134,7 @@ def comment_edit(request, slug, comment_id):
         if comment_form.is_valid():
             updated_comment = comment_form.save(commit=False)
             updated_comment.post = post
-            # Om du vill att redigerade kommentarer alltid måste godkännas igen:
-            # updated_comment.approved = False
+           
             updated_comment.save()
             messages.success(request, "Comment updated successfully!")
             return HttpResponseRedirect(reverse('post_detail', args=[slug]))
