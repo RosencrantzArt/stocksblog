@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 from .models import Post, Comment
 from .forms import CommentForm, PostForm
@@ -106,7 +107,7 @@ class PostUpdateView(UpdateView):
 class PostDeleteView(DeleteView):
     model = Post
     template_name = "blog/post_confirm_delete.html"
-    success_url = reverse("home")
+    success_url = reverse_lazy("post_list")
 
     def get_queryset(self):
       
