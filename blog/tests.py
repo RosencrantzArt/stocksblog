@@ -1,48 +1,66 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
-from blog.models import Post
+from blog.models import Post, Comment
 
-class BlogTestCase(TestCase):
+class BlogTests(TestCase):
     def setUp(self):
-      
-        self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.post = Post.objects.create(title='Test Post', content='This is a test.', author=self.user)
+        self.user = User.objects.create_user(username="testuser", password="12345")
+        self.admin = User.objects.create_superuser(
+            username="admin", password="admin123", email="admin@example.com"
+        )
+        self.client = Client()
+        self.client.login(username="testuser", password="12345")
 
-    def test_create_user(self):
-        
-        user = User.objects.create_user(username='anotheruser', password='anotherpass')
-        self.assertEqual(user.username, 'anotheruser')
+        self.post = Post.objects.create(
+            title="Test Post",
+            content="This is test content",
+            author=self.user,
+            status=1
+        )
 
-    def test_create_post(self):
-        
-        post = Post.objects.create(title='New Post', content='New content', author=self.user)
-        self.assertEqual(post.title, 'New Post')
+    def test_user_can_comment_on_post(self):
+        comment_count_before = Comment.objects.count()
+        response = self.client.post(
+            reverse('post_detail', args=[self.post.slug]),
+            {'text': 'This is a test comment'}
+        )
+        comment_count_after = Comment.objects.count()
+        self.assertEqual(comment_count_after, comment_count_before + 1)
+        comment = Comment.objects.last()
+        self.assertFalse(comment.approved)
 
-    def test_post_str_method(self):
-        
-        self.assertEqual(str(self.post), 'Test Post')
+    def test_anonymous_user_cannot_comment(self):
+        self.client.logout()
+        comment_count_before = Comment.objects.count()
+        response = self.client.post(
+            reverse('post_detail', args=[self.post.slug]),
+            {'text': 'Anon comment'}
+        )
+        comment_count_after = Comment.objects.count()
+        self.assertEqual(comment_count_after, comment_count_before)
 
-    def test_login_user(self):
-        
-        login = self.client.login(username='testuser', password='testpass')
-        self.assertTrue(login)
+    def test_admin_can_approve_comment(self):
+        comment = Comment.objects.create(post=self.post, author=self.user, text="Needs approval")
+        self.client.login(username="admin", password="admin123")
+        self.client.post(reverse('approve_comment', args=[comment.pk]))
+        comment.refresh_from_db()
+        self.assertTrue(comment.approved)
 
-    def test_post_list_view_status_code(self):
-      
-        response = self.client.get(reverse('post_list'))
-        self.assertEqual(response.status_code, 200)
+    def test_non_admin_cannot_approve_comment(self):
+        comment = Comment.objects.create(post=self.post, author=self.user, text="Needs approval")
+        response = self.client.post(reverse('approve_comment', args=[comment.pk]))
+        comment.refresh_from_db()
+        self.assertFalse(comment.approved)
+        self.assertNotEqual(response.status_code, 200)
 
-    def test_post_detail_view_status_code(self):
-        
-        response = self.client.get(reverse('post_detail', args=[self.post.pk]))
-        self.assertEqual(response.status_code, 200)
+    def test_user_can_delete_own_comment(self):
+        comment = Comment.objects.create(post=self.post, author=self.user, text="My comment")
+        response = self.client.post(reverse('comment_delete', args=[self.post.slug, comment.pk]))
+        self.assertFalse(Comment.objects.filter(pk=comment.pk).exists())
 
-    def test_post_with_author(self):
-       
-        self.assertEqual(self.post.author.username, 'testuser')
-
-    def test_post_without_title(self):
-        
-        with self.assertRaises(ValueError):
-            Post.objects.create(title=None, content='Missing title', author=self.user)
+    def test_user_cannot_delete_others_comment(self):
+        other_user = User.objects.create_user(username="otheruser", password="test123")
+        comment = Comment.objects.create(post=self.post, author=other_user, text="Other comment")
+        response = self.client.post(reverse('comment_delete', args=[self.post.slug, comment.pk]))
+        self.assertTrue(Comment.objects.filter(pk=comment.pk).exists())

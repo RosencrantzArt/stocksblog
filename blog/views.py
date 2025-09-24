@@ -1,19 +1,15 @@
-from django.shortcuts import render, get_object_or_404, reverse, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import Post, Comment
 from .forms import CommentForm, PostForm
-
-def some_view(request):
-    from blog.models import Post 
-    ...
-
 
 
 class PostList(generic.ListView):
@@ -27,36 +23,28 @@ class PostList(generic.ListView):
         return Post.objects.filter(status=1).order_by('-created_on')
 
 
-class PostDetail(generic.DetailView):
-    model = Post
-    template_name = 'blog/post_detail.html'
-    context_object_name = 'post'
-
-
 def home(request):
     return render(request, 'home.html')
 
 
 def post_detail(request, slug):
-    queryset = Post.objects.filter(status=1)
-    post = get_object_or_404(queryset, slug=slug)
-
-    comments = post.comments.all().order_by("-created_at")
-    comment_count = post.comments.filter(approved=True).count()
-
+    post = get_object_or_404(Post.objects.filter(status=1), slug=slug)
+    comments = post.comments.filter(approved=True).order_by("-created_at")
+    comment_count = comments.count()
     comment_form = CommentForm()
 
     if request.method == "POST":
+        if not request.user.is_authenticated:
+            messages.error(request, "You must be logged in to comment.")
+            return redirect("post_detail", slug=post.slug)
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.author = request.user
             comment.post = post
             comment.save()
-            messages.add_message(
-                request, messages.SUCCESS,
-                'Comment submitted and awaiting approval'
-            )
+            messages.success(request, "Comment submitted and awaiting approval")
+            return redirect("post_detail", slug=post.slug)
 
     return render(
         request,
@@ -72,7 +60,6 @@ def post_detail(request, slug):
 
 @login_required
 def post_create(request):
-    """ Create a new post """
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -95,7 +82,6 @@ class PostUpdateView(UpdateView):
     template_name = "blog/post_form.html"
 
     def get_queryset(self):
-       
         return Post.objects.filter(author=self.request.user)
 
     def form_valid(self, form):
@@ -110,22 +96,17 @@ class PostDeleteView(DeleteView):
     success_url = reverse_lazy("post_list")
 
     def get_queryset(self):
-      
         return Post.objects.filter(author=self.request.user)
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Post deleted successfully!")
         return super().delete(request, *args, **kwargs)
-    
-
 
 
 @login_required
 def comment_edit(request, slug, comment_id):
-    """ Edit a comment """
     post = get_object_or_404(Post, slug=slug)
     comment = get_object_or_404(Comment, pk=comment_id, post=post)
-
     if comment.author != request.user:
         messages.error(request, "You can only edit your own comments!")
         return HttpResponseRedirect(reverse('post_detail', args=[slug]))
@@ -135,7 +116,6 @@ def comment_edit(request, slug, comment_id):
         if comment_form.is_valid():
             updated_comment = comment_form.save(commit=False)
             updated_comment.post = post
-           
             updated_comment.save()
             messages.success(request, "Comment updated successfully!")
             return HttpResponseRedirect(reverse('post_detail', args=[slug]))
@@ -147,25 +127,29 @@ def comment_edit(request, slug, comment_id):
     return render(
         request,
         "blog/comment_edit.html",
-        {
-            "post": post,
-            "comment_form": comment_form,
-            "comment": comment,
-        },
+        {"post": post, "comment_form": comment_form, "comment": comment},
     )
 
 
 @login_required
 def comment_delete(request, slug, comment_id):
-    """ Delete a comment """
-    queryset = Post.objects.filter(status=1)
-    post = get_object_or_404(queryset, slug=slug)
-    comment = get_object_or_404(Comment, pk=comment_id)
+    post = get_object_or_404(Post.objects.filter(status=1), slug=slug)
+    comment = get_object_or_404(Comment, pk=comment_id, post=post)
 
     if comment.author == request.user:
         comment.delete()
-        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
+        messages.success(request, 'Comment deleted!')
     else:
-        messages.add_message(request, messages.ERROR, 'You can only delete your own comments!')
+        messages.error(request, 'You can only delete your own comments!')
 
     return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+
+
+def approve_comment(request, comment_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You are not allowed to approve comments")
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.approved = True
+    comment.save()
+    messages.success(request, "Comment approved!")
+    return redirect("post_detail", slug=comment.post.slug)
