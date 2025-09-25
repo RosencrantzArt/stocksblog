@@ -1,13 +1,13 @@
 # Stockblog
 
  ![](<staticfiles/admin/img/gis/responsive site .png>)
-Stockblog is a Django-based blog project that provides a platform for users to share and discover stock market analysis, investment tips, and strategies. It allows users to create accounts, post analysis, and comment on others' posts, with the ability to edit and delete their own comments. The blog emphasizes an easy-to-use, minimalistic design to enhance the reading experience for investors and market enthusiasts. 
+Stockblog is a Django-based blog project that provides a platform for users to read and discover stock market analysis, investment tips, and strategies. It allows users to create accounts and comment on posts, with the ability to edit and delete their own comments. The blog emphasizes an easy-to-use, minimalistic design to enhance the reading experience for investors and market enthusiasts. 
 
 ## Features
 
 - **User Accounts**: Users can register, log in and logout. 
 - **Comments**: Users can leave comments on posts, and edit or delete their own comments.
-- **Admin Control**: Admins have the ability to delete comments.
+- **Admin Control**: Admins have the ability to accpet or delete comments before they go live. 
   
 ## Technologies
 
