@@ -7,3 +7,9 @@ __pycache__/
 node_modules/
 .github/
 blog/fixtures/
+venv/
+*.pyc
+__pycache__/
+*.sqlite3
+media/
+staticfiles/
