@@ -13,11 +13,12 @@ SECRET_KEY = 'dudn6asrz6+qlq&))_r+mxjg3xgp1)a%)^15ov3301sxkph+98'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '8000-rosencrantza-stocksblog-ij81842ssky.ws.codeinstitute-ide.net',
-    '.herokuapp.com',
+    'stockblog-f1303a9b9ead.herokuapp.com',
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
+    '8000-rosencrantza-stocksblog-ij81842ssky.ws.codeinstitute-ide.net'
 ]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
