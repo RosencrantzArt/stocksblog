@@ -10,7 +10,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 SECRET_KEY = 'dudn6asrz6+qlq&))_r+mxjg3xgp1)a%)^15ov3301sxkph+98'
 
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '8000-rosencrantza-stocksblog-ij81842ssky.ws.codeinstitute-ide.net',
