@@ -17,17 +17,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicons/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicons/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+
+ 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+  
+    <link rel="stylesheet" href="{% static 'summernote/summernote-bs5.min.css' %}">
+    <link rel="stylesheet" href="{% static 'summernote/summernote-lite.min.css' %}">
+
+ 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
 
 <body class="d-flex flex-column h-100 main-bg">
+
 
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
@@ -65,6 +76,7 @@
         </div>
     </nav>
 
+
     <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
@@ -79,41 +91,7 @@
     </div>
 
     <main class="flex-shrink-0 main-bg">
-        {% block content %}
-        <div class="container-fluid">
-            <div class="row">
-                {% for post in posts %}
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="image-container">
-                                {#
-                                {% if "placeholder" in post.featured_image.url %}
-                                <img class="card-img-top" src="{% static 'images/default.jpg' %}" alt="placeholder image">
-                                {% else %}
-                                <img class="card-img-top" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
-                                {% endif %}
-                                #}
-                                <div class="image-flash">
-                                    <p class="author">Author: {{ post.author }}</p>
-                                </div>
-                            </div>
-                            <a href="{% url 'post_detail' post.slug %}" class="post-link">
-                                <h2 class="card-title">{{ post.title }}</h2>
-                            </a>
-                            <hr />
-                            <p class="card-text text-muted h6">Published on: {{ post.created_on }}</p>
-                        </div>
-                    </div>
-                </div>
-                {% if forloop.counter|divisibleby:3 %}
-            </div>
-            <div class="row">
-                {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-        {% endblock content %}
+        {% block content %}{% endblock content %}
     </main>
 
     <footer class="footer mt-auto py-3 dark-bg">
@@ -129,12 +107,18 @@
         </p>
     </footer>
 
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
 
-    {% block extras %}
-    {% endblock %}
-</body>
+   
+    <script src="{% static 'summernote/summernote-bs5.min.js' %}"></script>
+    <script src="{% static 'summernote/summernote-lite.min.js' %}"></script>
 
+    
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% block extras %}{% endblock %}
+</body>
 </html>
