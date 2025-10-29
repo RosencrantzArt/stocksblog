@@ -5,22 +5,22 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
-
-ENVIRONMENT = os.environ.get('ENVIRONMENT', 'development')
+ENVIRONMENT = os.environ.get('ENVIRONMENT', 'development').lower()
 DEBUG = ENVIRONMENT == 'development'
-
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
 
-
-if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+allowed_hosts_env = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
+if allowed_hosts_env:
+    ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_env.split(',') if h.strip()]
 else:
-    ALLOWED_HOSTS = [
-        'stockblog-f1303a9b9ead.herokuapp.com',
-        '8000-rosencrantza-stocksblog-ij81842ssky.ws.codeinstitute-ide.net',
-    ]
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+csrf_trusted = os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '')
+if csrf_trusted:
+    CSRF_TRUSTED_ORIGINS = [u.strip() for u in csrf_trusted.split(',') if u.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,8 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-   
     'cloudinary_storage',
     'django.contrib.sites',
     'allauth',
@@ -40,7 +38,6 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'django_summernote',
     'cloudinary',
-
     'blog',
     'about',
 ]
@@ -49,10 +46,8 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -67,7 +62,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'finance.urls'
-
 
 TEMPLATES = [
     {
@@ -87,14 +81,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'finance.wsgi.application'
 
-
 DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
 DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
-
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'blog', 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -105,17 +98,6 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://*.gitpod.io',
-    'https://*.codeinstitute-ide.net',
-    'https://*.herokuapp.com',
-    'https://stockblog-f1303a9b9ead.herokuapp.com',
-]
-
-
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -123,14 +105,12 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
-
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
